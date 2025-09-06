@@ -1,28 +1,12 @@
-
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import bodyParser from 'body-parser';
 import pkg from 'pg';
-
-const { Pool } = pkg;
-
-// Añade arriba del todo:
 import path from 'path';
 import { fileURLToPath } from 'url';
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
-// Sirve estáticos del panel
-app.use('/admin', express.static('public'));
-
-// Cuando pidan /admin, devuelve admin.html explícitamente
-app.get('/admin', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'admin.html'));
-});
-
-// (Opcional) Redirige la raíz al panel
-app.get('/', (req, res) => res.redirect('/admin'));
+const { Pool } = pkg;
 
 // ==== ENV ====
 const PORT = process.env.PORT || 8787;
@@ -35,9 +19,9 @@ if (!DATABASE_URL) {
   process.exit(1);
 }
 
+// ==== DB ====
 const pool = new Pool({ connectionString: DATABASE_URL });
 
-// ==== DB bootstrap ====
 async function bootstrap() {
   await pool.query(`
     create table if not exists config (
@@ -46,7 +30,6 @@ async function bootstrap() {
       updated_at timestamptz not null default now()
     );
   `);
-  // seed 'default' if not exists
   await pool.query(
     `insert into config(id, data) values ($1, $2)
      on conflict (id) do nothing`,
@@ -55,11 +38,9 @@ async function bootstrap() {
   console.log('✅ DB lista');
 }
 
-// ==== helpers ====
 async function readDB(orgId = 'default') {
   const { rows } = await pool.query('select data from config where id=$1', [orgId]);
   if (!rows.length) {
-    // autocreate org on first access
     await pool.query(
       `insert into config(id, data) values ($1, $2)
        on conflict (id) do nothing`,
@@ -78,17 +59,25 @@ async function writeDB(orgId, data) {
   );
 }
 
-// ==== app ====
+// ==== APP ====
 const app = express();
 app.set('trust proxy', 1);
 app.use(helmet());
-app.use(cors()); // puedes restringir origenes si lo prefieres
+app.use(cors());
 app.use(bodyParser.json({ limit: '1mb' }));
 
-// Static admin panel
-app.use('/admin', express.static('public'));
+// ESM __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-// Middlewares de auth
+// === Panel estático y rutas amigables ===
+app.use('/admin', express.static('public')); // sirve /admin/* desde /public
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+});
+app.get('/', (req, res) => res.redirect('/admin'));
+
+// ==== Auth ====
 function requireAdmin(req, res, next) {
   const pass = req.header('X-Admin-Auth');
   if (pass !== ADMIN_PASS) return res.status(401).json({ error: 'unauthorized' });
@@ -101,7 +90,6 @@ function requireOrg(req, res, next) {
 }
 
 // ==== Admin API ====
-// Upsert de sitio (patrones + selectores + guard)
 app.post('/api/admin/site', requireAdmin, async (req, res) => {
   const org = (req.query.org || 'default').toString();
   const site = req.body;
@@ -113,7 +101,6 @@ app.post('/api/admin/site', requireAdmin, async (req, res) => {
   res.json({ ok: true });
 });
 
-// Guardado de credenciales cifradas (E2E: el servidor no ve plaintext)
 app.post('/api/admin/cred', requireAdmin, async (req, res) => {
   const org = (req.query.org || 'default').toString();
   const { siteKey, blob } = req.body || {};
@@ -127,14 +114,12 @@ app.post('/api/admin/cred', requireAdmin, async (req, res) => {
   res.json({ ok: true });
 });
 
-// Listado crudo (útil para debug en admin)
 app.get('/api/admin/list', requireAdmin, async (req, res) => {
   const org = (req.query.org || 'default').toString();
   const db = await readDB(org);
   res.json(db);
 });
 
-// Reset (vaciar todo para esa org)
 app.delete('/api/admin/reset', requireAdmin, async (req, res) => {
   const org = (req.query.org || 'default').toString();
   await writeDB(org, { sites: [], credentials: {} });
