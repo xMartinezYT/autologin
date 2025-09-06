@@ -1,163 +1,1090 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <title>Panel · Autologin & Guard</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 20px; max-width: 1000px; }
-    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    input, textarea, button { padding: 8px; border: 1px solid #ddd; border-radius: 8px; width: 100%; }
-    textarea { min-height: 80px; }
-    button { background: #111; color: #fff; cursor: pointer; border-radius: 8px; }
-    .card { border: 1px solid #eee; border-radius: 12px; padding: 16px; background: #fafafa; }
-    label { font-size: 12px; color: #555; }
-    .row { margin-bottom: 10px; }
-    .small { color: #666; font-size: 12px; }
-    .danger { background: #9b2226; }
-    pre { background:#111; color:#fff; padding:12px; border-radius:8px; max-height:340px; overflow:auto; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autologin Remote - Panel de Administración</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            min-height: 600px;
+        }
+
+        .sidebar {
+            background: #f8f9fa;
+            padding: 30px 20px;
+            border-right: 1px solid #e9ecef;
+        }
+
+        .nav-item {
+            display: block;
+            padding: 12px 15px;
+            color: #495057;
+            text-decoration: none;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            transition: all 0.3s;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: #007bff;
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .nav-item i {
+            width: 20px;
+            margin-right: 10px;
+        }
+
+        .content-area {
+            padding: 30px;
+            overflow-y: auto;
+            max-height: calc(100vh - 200px);
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,123,255,0.3);
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #1e7e34;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border-left: 4px solid;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .alert-danger {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        .alert-info {
+            background: #cce7ff;
+            border-color: #007bff;
+            color: #004085;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .table th,
+        .table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-connected {
+            background: #28a745;
+        }
+
+        .status-disconnected {
+            background: #dc3545;
+        }
+
+        .status-warning {
+            background: #ffc107;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #007bff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .config-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                border-right: none;
+                border-bottom: 1px solid #e9ecef;
+            }
+
+            .config-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-  <h1>Panel de administrador · Autologin & Guard</h1>
-  <p class="small">Las credenciales se cifran <b>en tu navegador</b> con una frase maestra. El servidor sólo guarda blobs cifrados.</p>
+    <div class="container">
+        <div class="header">
+            <h1>🔐 Autologin Remote</h1>
+            <p>Panel de Administración Centralizado</p>
+        </div>
 
-  <div class="card">
-    <div class="grid">
-      <div>
-        <h3>Conexión</h3>
-        <div class="row"><label>Endpoint del servidor</label><input id="apiBase" placeholder="https://tu-app.onrender.com"></div>
-        <div class="row"><label>Organization ID</label><input id="orgId" value="default"></div>
-        <div class="row"><label>Password admin (X-Admin-Auth)</label><input id="adminPass" type="password" placeholder="ADMIN_PASS"></div>
-        <div class="row"><button id="testAuth">Probar conexión</button></div>
-        <div class="row"><span id="status"></span></div>
-      </div>
-      <div>
-        <h3>Frase maestra (cifrado E2E)</h3>
-        <div class="row"><label>Frase maestra</label><input id="master" type="password" placeholder="MASTER_PASSPHRASE"></div>
-        <div class="row small">Debe coincidir con la que configuras en la extensión (campo <code>MASTER_PASSPHRASE</code>).</div>
-      </div>
+        <div class="main-content">
+            <div class="sidebar">
+                <a href="#" class="nav-item active" onclick="showSection('connection')">
+                    <i>🔌</i> Conexión
+                </a>
+                <a href="#" class="nav-item" onclick="showSection('sites')">
+                    <i>🌐</i> Sitios Web
+                </a>
+                <a href="#" class="nav-item" onclick="showSection('credentials')">
+                    <i>🔑</i> Credenciales
+                </a>
+                <a href="#" class="nav-item" onclick="showSection('stats')">
+                    <i>📊</i> Estadísticas
+                </a>
+                <a href="#" class="nav-item" onclick="showSection('help')">
+                    <i>❓</i> Ayuda
+                </a>
+            </div>
+
+            <div class="content-area">
+                <!-- Sección de Conexión -->
+                <div id="connection" class="section active">
+                    <div class="card">
+                        <h3>🔌 Configuración de Conexión</h3>
+                        <div id="connectionStatus" class="alert alert-info">
+                            <span class="status-indicator status-warning"></span>
+                            No conectado - Configure la conexión
+                        </div>
+
+                        <div class="config-grid">
+                            <div class="form-group">
+                                <label for="apiEndpoint">API Endpoint</label>
+                                <input type="url" id="apiEndpoint" class="form-control" 
+                                       placeholder="https://autologin-remote.onrender.com" 
+                                       value="https://autologin-remote.onrender.com">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="orgId">Organization ID</label>
+                                <input type="text" id="orgId" class="form-control" 
+                                       placeholder="default" value="default">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="adminAuth">X-Admin-Auth (Password)</label>
+                                <input type="password" id="adminAuth" class="form-control" 
+                                       placeholder="Clave de administrador">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="masterPassphrase">Frase Maestra de Cifrado</label>
+                                <input type="password" id="masterPassphrase" class="form-control" 
+                                       placeholder="Frase para cifrado E2E">
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary" onclick="testConnection()">
+                            🔄 Probar Conexión
+                        </button>
+                        <button class="btn btn-secondary" onclick="generatePassphrase()">
+                            🎲 Generar Frase Maestra
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sección de Sitios -->
+                <div id="sites" class="section">
+                    <div class="card">
+                        <h3>🌐 Gestión de Sitios Web</h3>
+                        
+                        <div class="config-grid">
+                            <div class="form-group">
+                                <label for="siteKey">Clave del Sitio</label>
+                                <input type="text" id="siteKey" class="form-control" 
+                                       placeholder="ejemplo: facebook, amazon, etc.">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="urlPatterns">Patrones de URL (uno por línea)</label>
+                                <textarea id="urlPatterns" class="form-control" rows="3" 
+                                          placeholder="https://facebook.com/login*&#10;https://m.facebook.com/login*"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="usernameSelector">Selector Usuario (CSS)</label>
+                                <input type="text" id="usernameSelector" class="form-control" 
+                                       placeholder="input[name='email'], #email">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="passwordSelector">Selector Contraseña (CSS)</label>
+                                <input type="text" id="passwordSelector" class="form-control" 
+                                       placeholder="input[name='pass'], #pass">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="submitSelector">Selector Botón Submit (CSS)</label>
+                                <input type="text" id="submitSelector" class="form-control" 
+                                       placeholder="button[type='submit'], #loginbutton">
+                            </div>
+                        </div>
+
+                        <button class="btn btn-success" onclick="saveSite()">
+                            💾 Guardar Sitio
+                        </button>
+                        <button class="btn btn-primary" onclick="loadSites()">
+                            🔄 Cargar Sitios
+                        </button>
+                    </div>
+
+                    <div class="card">
+                        <h3>📋 Lista de Sitios Configurados</h3>
+                        <div id="sitesList">
+                            <p>Cargando sitios...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección de Credenciales -->
+                <div id="credentials" class="section">
+                    <div class="card">
+                        <h3>🔑 Gestión de Credenciales</h3>
+                        
+                        <div class="config-grid">
+                            <div class="form-group">
+                                <label for="credSiteKey">Sitio</label>
+                                <select id="credSiteKey" class="form-control">
+                                    <option value="">Seleccione un sitio...</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="username">Usuario/Email</label>
+                                <input type="text" id="username" class="form-control" 
+                                       placeholder="usuario@ejemplo.com">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password">Contraseña</label>
+                                <input type="password" id="password" class="form-control" 
+                                       placeholder="Contraseña segura">
+                            </div>
+                        </div>
+
+                        <button class="btn btn-success" onclick="saveCredentials()">
+                            🔒 Cifrar y Guardar
+                        </button>
+                        <button class="btn btn-primary" onclick="loadCredentials()">
+                            🔄 Cargar Credenciales
+                        </button>
+                        <button class="btn btn-secondary" onclick="testDecryption()">
+                            🔓 Probar Descifrado
+                        </button>
+                    </div>
+
+                    <div class="card">
+                        <h3>📋 Lista de Credenciales</h3>
+                        <div id="credentialsList">
+                            <p>Cargando credenciales...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección de Estadísticas -->
+                <div id="stats" class="section">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="statssites">0</div>
+                            <div class="stat-label">Sitios Configurados</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="statsCredentials">0</div>
+                            <div class="stat-label">Credenciales Guardadas</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="statsLastSync">-</div>
+                            <div class="stat-label">Última Sincronización</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>🔧 Acciones de Sistema</h3>
+                        <p>Estas acciones son permanentes y no se pueden deshacer.</p>
+                        
+                        <button class="btn btn-danger" onclick="resetDatabase()" 
+                                style="margin-right: 10px;">
+                            🗑️ Resetear Base de Datos
+                        </button>
+                        
+                        <button class="btn btn-primary" onclick="exportConfig()">
+                            📥 Exportar Configuración
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sección de Ayuda -->
+                <div id="help" class="section">
+                    <div class="card">
+                        <h3>❓ Guía de Uso</h3>
+                        
+                        <h4>1. Configuración Inicial</h4>
+                        <p>Primero configure la conexión con el servidor y una frase maestra segura para el cifrado E2E.</p>
+                        
+                        <h4>2. Agregar Sitios</h4>
+                        <p>Configure los sitios web donde quiere autologin automático. Necesita:</p>
+                        <ul>
+                            <li><strong>Clave del Sitio:</strong> Identificador único (ej: facebook, amazon)</li>
+                            <li><strong>Patrones de URL:</strong> URLs que coinciden con login (usar * como comodín)</li>
+                            <li><strong>Selectores CSS:</strong> Como encontrar los campos de usuario, contraseña y botón</li>
+                        </ul>
+
+                        <h4>3. Agregar Credenciales</h4>
+                        <p>Para cada sitio configurado, agregue las credenciales. Se cifran automáticamente antes de guardarse.</p>
+
+                        <h4>4. Configurar Extensión</h4>
+                        <div class="code-block">// orgConfig.js en la extensión
+const CONFIG = {
+    API_BASE: 'https://autologin-remote.onrender.com',
+    ORG_API_KEY: 'su-org-api-key',
+    ORG_ID: 'default', 
+    MASTER_PASSPHRASE: 'su-frase-maestra'
+};</div>
+
+                        <h4>5. Variables de Entorno</h4>
+                        <p>En Render.com configure estas variables:</p>
+                        <ul>
+                            <li><strong>ADMIN_PASS:</strong> Contraseña para este panel</li>
+                            <li><strong>ORG_API_KEY:</strong> Clave para que la extensión acceda a la config</li>
+                            <li><strong>DATABASE_URL:</strong> Se genera automáticamente</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <div class="grid" style="margin-top:20px;">
-    <div class="card">
-      <h3>Alta / edición de sitio</h3>
-      <div class="row"><label>key</label><input id="siteKey" placeholder="clave-única"></div>
-      <div class="row"><label>label</label><input id="siteLabel" placeholder="Nombre descriptivo"></div>
-      <div class="row"><label>Patrones de URL (uno por línea)</label><textarea id="urlPatterns" placeholder="https://dominio.com/login*"></textarea></div>
-      <div class="row"><label>Selector usuario</label><input id="userSel"></div>
-      <div class="row"><label>Selector contraseña</label><input id="passSel"></div>
-      <div class="row"><label>Selector submit</label><input id="submitSel"></div>
-      <div class="row"><label>Auto-enviar</label><input id="autoSubmit" type="checkbox" checked></div>
-      <div class="row"><label>Regex de ajustes bloqueados (uno por línea)</label><textarea id="guardRegex" placeholder="https://dominio\\.com/(account|settings).*"></textarea></div>
-      <div class="row"><label>Lock UI selectores (uno por línea)</label><textarea id="lockSel" placeholder='form[action*="settings"]'></textarea></div>
-      <div class="row"><label>Bloquear POST</label><input id="blockPost" type="checkbox" checked></div>
-      <div class="row"><button id="saveSite">Guardar sitio</button></div>
-    </div>
-    <div class="card">
-      <h3>Credenciales</h3>
-      <div class="row"><label>siteKey</label><input id="credKey" placeholder="clave del sitio"></div>
-      <div class="row"><label>Usuario</label><input id="username"></div>
-      <div class="row"><label>Contraseña</label><input id="password" type="password"></div>
-      <div class="row"><button id="saveCred">Guardar cifradas</button></div>
-      <p class="small">Se cifran con AES‑GCM + PBKDF2 (120k). El servidor no ve el plaintext.</p>
-    </div>
-  </div>
+    <script src="crypto.js"></script>
+    <script>
+        // Estado global
+        let isConnected = false;
+        let currentSites = [];
+        let currentCredentials = [];
 
-  <div class="card" style="margin-top:20px;">
-    <h3>Listado</h3>
-    <div class="row">
-      <button id="refresh">Refrescar</button>
-      <button class="danger" id="reset">Reset org</button>
-    </div>
-    <pre id="list"></pre>
-  </div>
+        // Mostrar/ocultar secciones
+        function showSection(sectionId) {
+            // Ocultar todas las secciones
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(s => s.classList.remove('active'));
+            
+            // Mostrar la seleccionada
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
 
-  <script>
-    const $ = sel => document.querySelector(sel);
-
-    function base() {
-      const b = $('#apiBase').value.trim().replace(/\/+$/,''); 
-      return b || location.origin;
-    }
-    function orgQS() {
-      const o = $('#orgId').value.trim() || 'default';
-      return '?org=' + encodeURIComponent(o);
-    }
-    function hdrs() {
-      return { 'X-Admin-Auth': $('#adminPass').value, 'Content-Type':'application/json' };
-    }
-
-    // WebCrypto helpers
-    async function importKeyFromPass(pass, salt) {
-      const enc = new TextEncoder();
-      const baseKey = await crypto.subtle.importKey('raw', enc.encode(pass), 'PBKDF2', false, ['deriveKey']);
-      return await crypto.subtle.deriveKey(
-        { name: 'PBKDF2', salt, iterations: 120000, hash: 'SHA-256' },
-        baseKey,
-        { name: 'AES-GCM', length: 256 },
-        false,
-        ['encrypt', 'decrypt']
-      );
-    }
-    async function encryptJSON(obj, passphrase) {
-      const iv = crypto.getRandomValues(new Uint8Array(12));
-      const salt = crypto.getRandomValues(new Uint8Array(16));
-      const key = await importKeyFromPass(passphrase, salt);
-      const data = new TextEncoder().encode(JSON.stringify(obj));
-      const ciphertext = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, data);
-      const b64 = (buf) => btoa(String.fromCharCode(...new Uint8Array(buf)));
-      return { ciphertext: b64(ciphertext), iv: b64(iv), salt: b64(salt) };
-    }
-
-    // Actions
-    $('#testAuth').onclick = async () => {
-      const res = await fetch(base() + '/api/admin/list' + orgQS(), { headers: hdrs() });
-      $('#status').textContent = res.ok ? '✅ Conectado' : '❌ ' + res.status;
-    };
-
-    $('#saveSite').onclick = async () => {
-      const site = {
-        key: $('#siteKey').value.trim(),
-        label: $('#siteLabel').value.trim(),
-        urlPatterns: $('#urlPatterns').value.split(/\n+/).map(s=>s.trim()).filter(Boolean),
-        login: {
-          usernameSelector: $('#userSel').value.trim(),
-          passwordSelector: $('#passSel').value.trim(),
-          submitSelector: $('#submitSel').value.trim(),
-          autoSubmit: $('#autoSubmit').checked
-        },
-        guard: {
-          guardedPathsRegex: $('#guardRegex').value.split(/\n+/).map(s=>s.trim()).filter(Boolean),
-          lockUISelectors: $('#lockSel').value.split(/\n+/).map(s=>s.trim()).filter(Boolean),
-          blockPost: $('#blockPost').checked
+            // Cargar datos si es necesario
+            if (sectionId === 'sites') loadSites();
+            if (sectionId === 'credentials') loadCredentials();
+            if (sectionId === 'stats') loadStats();
         }
-      };
-      const res = await fetch(base() + '/api/admin/site' + orgQS(), { method:'POST', headers: hdrs(), body: JSON.stringify(site) });
-      alert(res.ok ? 'Sitio guardado' : 'Error ' + res.status);
-    };
 
-    $('#saveCred').onclick = async () => {
-      const master = $('#master').value;
-      if (!master) return alert('Primero introduce la frase maestra');
-      const blob = await encryptJSON({ username: $('#username').value, password: $('#password').value }, master);
-      const body = { siteKey: $('#credKey').value.trim(), blob };
-      const res = await fetch(base() + '/api/admin/cred' + orgQS(), { method:'POST', headers: hdrs(), body: JSON.stringify(body) });
-      alert(res.ok ? 'Credenciales cifradas guardadas' : 'Error ' + res.status);
-    };
+        // Probar conexión con el servidor
+        async function testConnection() {
+            const endpoint = document.getElementById('apiEndpoint').value;
+            const adminAuth = document.getElementById('adminAuth').value;
+            const statusDiv = document.getElementById('connectionStatus');
 
-    $('#refresh').onclick = async () => {
-      const res = await fetch(base() + '/api/admin/list' + orgQS(), { headers: hdrs() });
-      $('#list').textContent = res.ok ? JSON.stringify(await res.json(), null, 2) : 'Error ' + res.status;
-    };
+            if (!endpoint || !adminAuth) {
+                showAlert(statusDiv, 'danger', 'Configure endpoint y contraseña de admin');
+                return;
+            }
 
-    $('#reset').onclick = async () => {
-      if (!confirm('¿Resetear toda la org?')) return;
-      const res = await fetch(base() + '/api/admin/reset' + orgQS(), { method:'DELETE', headers: hdrs() });
-      alert(res.ok ? 'Reset OK' : 'Error ' + res.status);
-      $('#refresh').click();
-    };
-  </script>
+            showAlert(statusDiv, 'info', 'Probando conexión...');
+
+            try {
+                const response = await fetch(`${endpoint}/api/admin/sites`, {
+                    headers: {
+                        'X-Admin-Auth': adminAuth
+                    }
+                });
+
+                if (response.ok) {
+                    isConnected = true;
+                    showAlert(statusDiv, 'success', '✅ Conexión exitosa');
+                } else if (response.status === 401) {
+                    showAlert(statusDiv, 'danger', '❌ Contraseña de admin incorrecta');
+                } else {
+                    showAlert(statusDiv, 'danger', `❌ Error: ${response.status}`);
+                }
+            } catch (error) {
+                showAlert(statusDiv, 'danger', `❌ Error de conexión: ${error.message}`);
+            }
+        }
+
+        // Generar frase maestra segura
+        async function generatePassphrase() {
+            const passphrase = await CryptoUtils.generateSecurePassphrase(4);
+            document.getElementById('masterPassphrase').value = passphrase;
+            
+            const strength = CryptoUtils.validatePassphraseStrength(passphrase);
+            alert(`Frase generada: ${passphrase}\nFuerza: ${strength.strength}\nGuarde esta frase en un lugar seguro.`);
+        }
+
+        // Guardar sitio web
+        async function saveSite() {
+            if (!isConnected) {
+                alert('Primero configure y pruebe la conexión');
+                return;
+            }
+
+            const siteKey = document.getElementById('siteKey').value.trim();
+            const urlPatterns = document.getElementById('urlPatterns').value
+                .split('\n').filter(u => u.trim()).map(u => u.trim());
+            const usernameSelector = document.getElementById('usernameSelector').value.trim();
+            const passwordSelector = document.getElementById('passwordSelector').value.trim();
+            const submitSelector = document.getElementById('submitSelector').value.trim();
+
+            if (!siteKey || !urlPatterns.length || !usernameSelector || !passwordSelector) {
+                alert('Complete todos los campos obligatorios');
+                return;
+            }
+
+            const siteData = {
+                key: siteKey,
+                urlPatterns: urlPatterns,
+                selectors: {
+                    username: usernameSelector,
+                    password: passwordSelector,
+                    submit: submitSelector || null
+                },
+                blockingRules: []
+            };
+
+            try {
+                const response = await fetch(`${document.getElementById('apiEndpoint').value}/api/admin/site`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Admin-Auth': document.getElementById('adminAuth').value
+                    },
+                    body: JSON.stringify(siteData)
+                });
+
+                if (response.ok) {
+                    alert('✅ Sitio guardado exitosamente');
+                    clearSiteForm();
+                    loadSites();
+                } else {
+                    const error = await response.json();
+                    alert(`❌ Error: ${error.error}`);
+                }
+            } catch (error) {
+                alert(`❌ Error guardando sitio: ${error.message}`);
+            }
+        }
+
+        // Limpiar formulario de sitios
+        function clearSiteForm() {
+            document.getElementById('siteKey').value = '';
+            document.getElementById('urlPatterns').value = '';
+            document.getElementById('usernameSelector').value = '';
+            document.getElementById('passwordSelector').value = '';
+            document.getElementById('submitSelector').value = '';
+        }
+
+        // Cargar lista de sitios
+        async function loadSites() {
+            if (!isConnected) return;
+
+            try {
+                const response = await fetch(`${document.getElementById('apiEndpoint').value}/api/admin/sites`, {
+                    headers: {
+                        'X-Admin-Auth': document.getElementById('adminAuth').value
+                    }
+                });
+
+                if (response.ok) {
+                    currentSites = await response.json();
+                    displaySites(currentSites);
+                    updateSiteSelector();
+                } else {
+                    document.getElementById('sitesList').innerHTML = 
+                        '<div class="alert alert-danger">Error cargando sitios</div>';
+                }
+            } catch (error) {
+                document.getElementById('sitesList').innerHTML = 
+                    '<div class="alert alert-danger">Error de conexión</div>';
+            }
+        }
+
+        // Mostrar sitios en la tabla
+        function displaySites(sites) {
+            const container = document.getElementById('sitesList');
+            
+            if (sites.length === 0) {
+                container.innerHTML = '<p>No hay sitios configurados.</p>';
+                return;
+            }
+
+            let html = `
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Sitio</th>
+                            <th>Patrones URL</th>
+                            <th>Credenciales</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            sites.forEach(site => {
+                const hasCredentials = site.encrypted_data ? '✅' : '❌';
+                const patterns = site.url_patterns.join('<br>');
+                
+                html += `
+                    <tr>
+                        <td><strong>${site.key}</strong></td>
+                        <td><small>${patterns}</small></td>
+                        <td>${hasCredentials}</td>
+                        <td>
+                            <button class="btn btn-danger" onclick="deleteSite('${site.key}')">🗑️</button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        // Actualizar selector de sitios en credenciales
+        function updateSiteSelector() {
+            const selector = document.getElementById('credSiteKey');
+            selector.innerHTML = '<option value="">Seleccione un sitio...</option>';
+            
+            currentSites.forEach(site => {
+                selector.innerHTML += `<option value="${site.key}">${site.key}</option>`;
+            });
+        }
+
+        // Eliminar sitio
+        async function deleteSite(siteKey) {
+            if (!confirm(`¿Eliminar sitio "${siteKey}" y sus credenciales?`)) return;
+
+            try {
+                const response = await fetch(`${document.getElementById('apiEndpoint').value}/api/admin/site/${siteKey}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-Admin-Auth': document.getElementById('adminAuth').value
+                    }
+                });
+
+                if (response.ok) {
+                    alert('✅ Sitio eliminado');
+                    loadSites();
+                } else {
+                    alert('❌ Error eliminando sitio');
+                }
+            } catch (error) {
+                alert(`❌ Error: ${error.message}`);
+            }
+        }
+
+        // Guardar credenciales (cifradas)
+        async function saveCredentials() {
+            if (!isConnected) {
+                alert('Primero configure y pruebe la conexión');
+                return;
+            }
+
+            const siteKey = document.getElementById('credSiteKey').value;
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const masterPassphrase = document.getElementById('masterPassphrase').value;
+
+            if (!siteKey || !username || !password || !masterPassphrase) {
+                alert('Complete todos los campos');
+                return;
+            }
+
+            try {
+                // Cifrar credenciales en el navegador
+                const credentials = { username, password, createdAt: new Date().toISOString() };
+                const encryptedData = await AdminCryptoUtils.encryptCredentials(credentials, masterPassphrase);
+
+                const response = await fetch(`${document.getElementById('apiEndpoint').value}/api/admin/credential`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Admin-Auth': document.getElementById('adminAuth').value
+                    },
+                    body: JSON.stringify({
+                        siteKey: siteKey,
+                        encryptedData: encryptedData
+                    })
+                });
+
+                if (response.ok) {
+                    alert('✅ Credenciales cifradas y guardadas');
+                    clearCredentialsForm();
+                    loadCredentials();
+                } else {
+                    const error = await response.json();
+                    alert(`❌ Error: ${error.error}`);
+                }
+            } catch (error) {
+                alert(`❌ Error cifrando credenciales: ${error.message}`);
+            }
+        }
+
+        // Limpiar formulario de credenciales
+        function clearCredentialsForm() {
+            document.getElementById('credSiteKey').value = '';
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        }
+
+        // Cargar credenciales
+        async function loadCredentials() {
+            if (!isConnected) return;
+
+            try {
+                const response = await fetch(`${document.getElementById('apiEndpoint').value}/api/admin/credentials`, {
+                    headers: {
+                        'X-Admin-Auth': document.getElementById('adminAuth').value
+                    }
+                });
+
+                if (response.ok) {
+                    currentCredentials = await response.json();
+                    displayCredentials(currentCredentials);
+                } else {
+                    document.getElementById('credentialsList').innerHTML = 
+                        '<div class="alert alert-danger">Error cargando credenciales</div>';
+                }
+            } catch (error) {
+                document.getElementById('credentialsList').innerHTML = 
+                    '<div class="alert alert-danger">Error de conexión</div>';
+            }
+        }
+
+        // Mostrar credenciales
+        function displayCredentials(credentials) {
+            const container = document.getElementById('credentialsList');
+            
+            if (credentials.length === 0) {
+                container.innerHTML = '<p>No hay credenciales guardadas.</p>';
+                return;
+            }
+
+            let html = `
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Sitio</th>
+                            <th>Estado</th>
+                            <th>Actualizado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            credentials.forEach(cred => {
+                const date = new Date(cred.updated_at).toLocaleDateString();
+                
+                html += `
+                    <tr>
+                        <td><strong>${cred.site_key}</strong></td>
+                        <td>🔒 Cifrado</td>
+                        <td>${date}</td>
+                        <td>
+                            <button class="btn btn-secondary" onclick="testCredentialDecryption('${cred.site_key}')">🔓</button>
+                            <button class="btn btn-danger" onclick="deleteCredential('${cred.site_key}')">🗑️</button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        // Probar descifrado de credenciales
+        async function testDecryption() {
+            const masterPassphrase = document.getElementById('masterPassphrase').value;
+            
+            if (!masterPassphrase) {
+                alert('Ingrese la frase maestra');
+                return;
+            }
+
+            if (currentCredentials.length === 0) {
+                alert('No hay credenciales para probar');
+                return;
+            }
+
+            let successCount = 0;
+            let totalCount = currentCredentials.length;
+
+            for (const cred of currentCredentials) {
+                try {
+                    await AdminCryptoUtils.decryptCredentials(cred.encrypted_data, masterPassphrase);
+                    successCount++;
+                } catch (error) {
+                    console.error(`Error descifrando ${cred.site_key}:`, error);
+                }
+            }
+
+            if (successCount === totalCount) {
+                alert(`✅ Todas las credenciales (${successCount}/${totalCount}) se descifraron correctamente`);
+            } else {
+                alert(`⚠️ Solo ${successCount}/${totalCount} credenciales se descifraron correctamente. Verifique la frase maestra.`);
+            }
+        }
+
+        // Probar descifrado de credencial específica
+        async function testCredentialDecryption(siteKey) {
+            const masterPassphrase = document.getElementById('masterPassphrase').value;
+            
+            if (!masterPassphrase) {
+                alert('Ingrese la frase maestra');
+                return;
+            }
+
+            const credential = currentCredentials.find(c => c.site_key === siteKey);
+            if (!credential) return;
+
+            try {
+                const decrypted = await AdminCryptoUtils.decryptCredentials(credential.encrypted_data, masterPassphrase);
+                alert(`✅ Credencial descifrada:\nUsuario: ${decrypted.username}\nContraseña: ${decrypted.password.replace(/./g, '*')}\nCreado: ${decrypted.createdAt}`);
+            } catch (error) {
+                alert(`❌ Error descifrando: ${error.message}`);
+            }
+        }
+
+        // Eliminar credencial
+        async function deleteCredential(siteKey) {
+            if (!confirm(`¿Eliminar credencial de "${siteKey}"?`)) return;
+
+            try {
+                const response = await fetch(`${document.getElementById('apiEndpoint').value}/api/admin/credential/${siteKey}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-Admin-Auth': document.getElementById('adminAuth').value
+                    }
+                });
+
+                if (response.ok) {
+                    alert('✅ Credencial eliminada');
+                    loadCredentials();
+                } else {
+                    alert('❌ Error eliminando credencial');
+                }
+            } catch (error) {
+                alert(`❌ Error: ${error.message}`);
+            }
+        }
+
+        // Cargar estadísticas
+        async function loadStats() {
+            document.getElementById('statsites').textContent = currentSites.length;
+            document.getElementById('statsCredentials').textContent = currentCredentials.length;
+            document.getElementById('statsLastSync').textContent = new Date().toLocaleTimeString();
+        }
+
+        // Resetear base de datos
+        async function resetDatabase() {
+            if (!confirm('⚠️ PELIGRO: Esto eliminará TODOS los sitios y credenciales. ¿Continuar?')) return;
+            if (!confirm('Esta acción NO se puede deshacer. ¿Está seguro?')) return;
+
+            try {
+                const response = await fetch(`${document.getElementById('apiEndpoint').value}/api/admin/reset`, {
+                    method: 'POST',
+                    headers: {
+                        'X-Admin-Auth': document.getElementById('adminAuth').value
+                    }
+                });
+
+                if (response.ok) {
+                    alert('✅ Base de datos reiniciada');
+                    loadSites();
+                    loadCredentials();
+                } else {
+                    alert('❌ Error reiniciando base de datos');
+                }
+            } catch (error) {
+                alert(`❌ Error: ${error.message}`);
+            }
+        }
+
+        // Exportar configuración
+        async function exportConfig() {
+            const config = {
+                sites: currentSites,
+                credentials: currentCredentials.map(c => ({
+                    site_key: c.site_key,
+                    encrypted: true,
+                    updated_at: c.updated_at
+                })),
+                exported_at: new Date().toISOString()
+            };
+
+            const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `autologin-config-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            
+            URL.revokeObjectURL(url);
+        }
+
+        // Mostrar alerta en elemento específico
+        function showAlert(element, type, message) {
+            element.className = `alert alert-${type}`;
+            
+            let icon = '';
+            switch(type) {
+                case 'success': icon = '✅'; break;
+                case 'danger': icon = '❌'; break;
+                case 'info': icon = 'ℹ️'; break;
+                case 'warning': icon = '⚠️'; break;
+            }
+            
+            element.innerHTML = `<span class="status-indicator status-${type === 'success' ? 'connected' : type === 'danger' ? 'disconnected' : 'warning'}"></span>${icon} ${message}`;
+        }
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Panel de administración cargado');
+            
+            // Cargar configuración guardada del localStorage si existe
+            const savedEndpoint = localStorage.getItem('autologin_endpoint');
+            const savedOrgId = localStorage.getItem('autologin_org_id');
+            
+            if (savedEndpoint) document.getElementById('apiEndpoint').value = savedEndpoint;
+            if (savedOrgId) document.getElementById('orgId').value = savedOrgId;
+            
+            // Guardar configuración automáticamente
+            document.getElementById('apiEndpoint').addEventListener('change', function() {
+                localStorage.setItem('autologin_endpoint', this.value);
+            });
+            
+            document.getElementById('orgId').addEventListener('change', function() {
+                localStorage.setItem('autologin_org_id', this.value);
+            });
+        });
+    </script>
 </body>
 </html>
