@@ -297,7 +297,7 @@ class CryptoUtils {
             'Alpha', 'Beta', 'Gamma', 'Delta', 'Echo', 'Foxtrot', 'Golf', 'Hotel',
             'India', 'Juliet', 'Kilo', 'Lima', 'Mike', 'November', 'Oscar', 'Papa',
             'Quebec', 'Romeo', 'Sierra', 'Tango', 'Uniform', 'Victor', 'Whiskey',
-            'X-ray', 'Yankee', 'Zulu', 'Azure', 'Crimson', 'Jade', 'Violet'
+            'Xray', 'Yankee', 'Zulu', 'Azure', 'Crimson', 'Jade', 'Violet'
         ];
         
         const selectedWords = [];
