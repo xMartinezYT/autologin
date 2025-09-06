@@ -1,20 +1,25 @@
-
 services:
   - type: web
     name: autologin-remote
-    runtime: node
+    env: node
     plan: free
-    buildCommand: "npm install"
-    startCommand: "node server.js"
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /healthz
     envVars:
+      - key: NODE_ENV
+        value: production
       - key: ADMIN_PASS
-        value: "EcomproJavi1"
-      - key: ORG_API_KEY
-        value: "org_9f3c3e8f4d7a2b86a1c0e7f9b3d5c1aa5e8f4b2c7d9e0f1a2b3c4d5e6f7a8b9c"
+        generateValue: true
+      - key: ORG_API_KEY  
+        generateValue: true
       - key: DATABASE_URL
         fromDatabase:
           name: autologin-db
           property: connectionString
+
 databases:
   - name: autologin-db
+    databaseName: autologin_production
+    user: autologin_user
     plan: free
