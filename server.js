@@ -7,6 +7,23 @@ import pkg from 'pg';
 
 const { Pool } = pkg;
 
+// Añade arriba del todo:
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Sirve estáticos del panel
+app.use('/admin', express.static('public'));
+
+// Cuando pidan /admin, devuelve admin.html explícitamente
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+});
+
+// (Opcional) Redirige la raíz al panel
+app.get('/', (req, res) => res.redirect('/admin'));
+
 // ==== ENV ====
 const PORT = process.env.PORT || 8787;
 const ADMIN_PASS = process.env.ADMIN_PASS || 'cambia-esto';
