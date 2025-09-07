@@ -1,9 +1,136 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <title>EcomPro Panel</title>
-    <script defer src="panel.js"></script>
-  </head>
-  <body></body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EcomPro Panel</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Botón para abrir/cerrar el menú -->
+  <button id="sidebarToggle" class="sidebar-toggle" aria-label="Mostrar menú">☰</button>
+
+  <!-- Barra lateral ocultable -->
+  <aside class="sidebar" id="sidebar">
+    <a href="#" class="nav-item"><i class="icon home"></i></a>
+    <a href="#" class="nav-item"><i class="icon tools"></i></a>
+    <a href="#" class="nav-item"><i class="icon integrations"></i></a>
+    <a href="#" class="nav-item"><i class="icon settings"></i></a>
+  </aside>
+
+  <!-- Contenido principal -->
+  <main class="content">
+    <header class="header">
+      <h1 class="logo"><span class="logo-icon">🛡️</span> EcomPro</h1>
+
+      <div class="search-wrapper">
+        <input type="text" id="search" placeholder="Search for a tool..." aria-label="Search tools" />
+        <i class="icon search-icon"></i>
+      </div>
+
+      <div class="filter-tags">
+        <button class="tag active" data-tag="all">All</button>
+        <button class="tag" data-tag="seo">SEO</button>
+        <button class="tag" data-tag="design">Design</button>
+        <button class="tag" data-tag="copy">Copy</button>
+        <button class="tag" data-tag="ai">AI</button>
+      </div>
+    </header>
+
+    <section class="cards" id="cardsContainer">
+      <article class="card" data-tags="tools">
+        <div class="card-icon"><i class="icon tool"></i></div>
+        <h2 class="card-title">30+ Bonus Tools</h2>
+        <p class="card-description">
+          Comprehensive collection of marketing tools, templates and automation scripts.
+        </p>
+        <div class="card-footer">
+          <span class="badge">New</span>
+          <div class="tags"><span class="tag">Tools</span></div>
+        </div>
+      </article>
+
+      <article class="card" data-tags="seo ai">
+        <div class="card-icon"><i class="icon tool"></i></div>
+        <h2 class="card-title">GetStacked</h2>
+        <p class="card-description">
+          Diseño de estrategia competitiva. Compara con datos reales, descubre brechas y crea tu ventaja ganadora.
+        </p>
+        <div class="card-footer">
+          <span class="badge">Bajo costo</span>
+          <div class="tags"><span class="tag">SEO</span><span class="tag">AI</span></div>
+        </div>
+      </article>
+
+      <article class="card" data-tags="design">
+        <div class="card-icon"><i class="icon tool"></i></div>
+        <h2 class="card-title">Pikpads</h2>
+        <p class="card-description">
+          Catálogo de imágenes para Facebook, TikTok, IG y más. Diferencia tu marca en un mar de anuncios repetidos.
+        </p>
+        <div class="card-footer">
+          <span class="badge">Avanzado</span>
+          <div class="tags"><span class="tag">Design</span></div>
+        </div>
+      </article>
+
+      <article class="card" data-tags="ai">
+        <div class="card-icon"><i class="icon tool"></i></div>
+        <h2 class="card-title">Gemini</h2>
+        <p class="card-description">
+          Consigue un asistente personal que te escriba copys, responda correos y automatice tareas con IA.
+        </p>
+        <div class="card-footer">
+          <span class="badge">Experimental</span>
+          <div class="tags"><span class="tag">AI</span></div>
+        </div>
+      </article>
+
+      <article class="card" data-tags="ai">
+        <div class="card-icon"><i class="icon tool"></i></div>
+        <h2 class="card-title">WinningHunter</h2>
+        <p class="card-description">Encuentra productos ganadores para tu tienda con un clic.</p>
+        <div class="card-footer">
+          <span class="badge">Bajo costo</span>
+          <div class="tags"><span class="tag">AI</span></div>
+        </div>
+      </article>
+
+      <article class="card" data-tags="seo">
+        <div class="card-icon"><i class="icon tool"></i></div>
+        <h2 class="card-title">Kukodata</h2>
+        <p class="card-description">Analiza tus competidores en Amazon y descubre nichos rentables.</p>
+        <div class="card-footer">
+          <span class="badge">Avanzado</span>
+          <div class="tags"><span class="tag">SEO</span></div>
+        </div>
+      </article>
+
+      <article class="card" data-tags="ai">
+        <div class="card-icon"><i class="icon tool"></i></div>
+        <h2 class="card-title">HeyGen</h2>
+        <p class="card-description">Crea videos con avatares virtuales impulsados por IA en segundos.</p>
+        <div class="card-footer">
+          <span class="badge">Popular</span>
+          <div class="tags"><span class="tag">AI</span></div>
+        </div>
+      </article>
+
+      <article class="card" data-tags="ai">
+        <div class="card-icon"><i class="icon tool"></i></div>
+        <h2 class="card-title">ChattiGPT</h2>
+        <p class="card-description">Integra un chatbot de IA a tu sitio web para mejorar el soporte al cliente.</p>
+        <div class="card-footer">
+          <span class="badge">Popular</span>
+          <div class="tags"><span class="tag">AI</span></div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
 </html>
