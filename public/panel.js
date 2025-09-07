@@ -1,17 +1,9 @@
-// Sidebar desplegable
-const sidebar = document.getElementById("sidebar");
-const sidebarToggle = document.getElementById("sidebarToggle");
-
-sidebarToggle.addEventListener("click", () => {
-  sidebar.classList.toggle("open");
-  sidebarToggle.textContent = sidebar.classList.contains("open") ? "×" : "☰";
-});
-
-// Filtrado por búsqueda y etiquetas
+// Filtrado por texto y etiquetas
 const searchInput = document.getElementById("search");
 const tagButtons = document.querySelectorAll(".filter-tags .tag");
 const cardsContainer = document.getElementById("cardsContainer");
 const cards = Array.from(cardsContainer.getElementsByClassName("card"));
+
 let activeTag = "all";
 
 searchInput.addEventListener("input", filterCards);
@@ -27,12 +19,15 @@ tagButtons.forEach((button) => {
 
 function filterCards() {
   const text = searchInput.value.toLowerCase();
+
   cards.forEach((card) => {
-    const title = card.querySelector(".card-title").textContent.toLowerCase();
-    const desc = card.querySelector(".card-description").textContent.toLowerCase();
-    const tags = card.dataset.tags.split(" ");
-    const matchesSearch = title.includes(text) || desc.includes(text);
-    const matchesTag = activeTag === "all" || tags.includes(activeTag);
+    const cardText = card.querySelector(".card-title").textContent.toLowerCase();
+    const cardDesc = card.querySelector(".card-description").textContent.toLowerCase();
+    const cardTags = card.dataset.tags.split(" ");
+
+    const matchesSearch = cardText.includes(text) || cardDesc.includes(text);
+    const matchesTag = activeTag === "all" || cardTags.includes(activeTag);
+
     card.style.display = matchesSearch && matchesTag ? "flex" : "none";
   });
 }
