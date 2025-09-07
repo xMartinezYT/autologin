@@ -3,18 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EcomPro Panel</title>
+  <title>EcomPro Panel – Futurista</title>
   <link rel="stylesheet" href="styles.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
 </head>
-<body>
-  <!-- Botón para abrir/cerrar el menú -->
-  <button id="sidebarToggle" class="sidebar-toggle" aria-label="Mostrar menú">☰</button>
 
-  <!-- Barra lateral ocultable -->
-  <aside class="sidebar" id="sidebar">
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
     <a href="#" class="nav-item"><i class="icon home"></i></a>
     <a href="#" class="nav-item"><i class="icon tools"></i></a>
     <a href="#" class="nav-item"><i class="icon integrations"></i></a>
@@ -24,7 +22,7 @@
   <!-- Contenido principal -->
   <main class="content">
     <header class="header">
-      <h1 class="logo"><span class="logo-icon">🛡️</span> EcomPro</h1>
+      <h1 class="logo">EcomPro</h1>
 
       <div class="search-wrapper">
         <input type="text" id="search" placeholder="Search for a tool..." aria-label="Search tools" />
@@ -41,96 +39,177 @@
     </header>
 
     <section class="cards" id="cardsContainer">
-      <article class="card" data-tags="tools">
-        <div class="card-icon"><i class="icon tool"></i></div>
-        <h2 class="card-title">30+ Bonus Tools</h2>
-        <p class="card-description">
-          Comprehensive collection of marketing tools, templates and automation scripts.
-        </p>
-        <div class="card-footer">
-          <span class="badge">New</span>
-          <div class="tags"><span class="tag">Tools</span></div>
-        </div>
-      </article>
+      <!-- Cards -->
+      <a class="card" data-tags="seo" href="https://gethookd.com/login" target="_blank" rel="noopener">
+        <div class="card-icon"><img src="https://logo.clearbit.com/gethookd.com" alt="GetHookd logo"></div>
+        <h2 class="card-title">GetHookd</h2>
+        <p class="card-description">Platform de retargeting y funnels.</p>
+        <div class="card-footer"><span class="tag">SEO</span></div>
+      </a>
 
-      <article class="card" data-tags="seo ai">
-        <div class="card-icon"><i class="icon tool"></i></div>
-        <h2 class="card-title">GetStacked</h2>
-        <p class="card-description">
-          Diseño de estrategia competitiva. Compara con datos reales, descubre brechas y crea tu ventaja ganadora.
-        </p>
-        <div class="card-footer">
-          <span class="badge">Bajo costo</span>
-          <div class="tags"><span class="tag">SEO</span><span class="tag">AI</span></div>
-        </div>
-      </article>
+      <a class="card" data-tags="seo" href="https://app.pipiads.com/login" target="_blank" rel="noopener">
+        <div class="card-icon"><img src="https://logo.clearbit.com/pipiads.com" alt="Pipiads logo"></div>
+        <h2 class="card-title">Pipiads</h2>
+        <p class="card-description">Espía anuncios TikTok e inspiraciones.</p>
+        <div class="card-footer"><span class="tag">SEO</span></div>
+      </a>
 
-      <article class="card" data-tags="design">
-        <div class="card-icon"><i class="icon tool"></i></div>
-        <h2 class="card-title">Pikpads</h2>
-        <p class="card-description">
-          Catálogo de imágenes para Facebook, TikTok, IG y más. Diferencia tu marca en un mar de anuncios repetidos.
-        </p>
-        <div class="card-footer">
-          <span class="badge">Avanzado</span>
-          <div class="tags"><span class="tag">Design</span></div>
-        </div>
-      </article>
+      <a class="card" data-tags="seo" href="https://www.kalodata.com/login" target="_blank" rel="noopener">
+        <div class="card-icon"><img src="https://logo.clearbit.com/kalodata.com" alt="Kalodata logo"></div>
+        <h2 class="card-title">Kalodata</h2>
+        <p class="card-description">Análisis de productos y mercado.</p>
+        <div class="card-footer"><span class="tag">SEO</span></div>
+      </a>
 
-      <article class="card" data-tags="ai">
-        <div class="card-icon"><i class="icon tool"></i></div>
-        <h2 class="card-title">Gemini</h2>
-        <p class="card-description">
-          Consigue un asistente personal que te escriba copys, responda correos y automatice tareas con IA.
-        </p>
-        <div class="card-footer">
-          <span class="badge">Experimental</span>
-          <div class="tags"><span class="tag">AI</span></div>
-        </div>
-      </article>
-
-      <article class="card" data-tags="ai">
-        <div class="card-icon"><i class="icon tool"></i></div>
+      <a class="card" data-tags="ai" href="https://app.winninghunter.com/login" target="_blank" rel="noopener">
+        <div class="card-icon"><img src="https://logo.clearbit.com/winninghunter.com" alt="WinningHunter logo"></div>
         <h2 class="card-title">WinningHunter</h2>
-        <p class="card-description">Encuentra productos ganadores para tu tienda con un clic.</p>
-        <div class="card-footer">
-          <span class="badge">Bajo costo</span>
-          <div class="tags"><span class="tag">AI</span></div>
-        </div>
-      </article>
+        <p class="card-description">Encuentra productos ganadores.</p>
+        <div class="card-footer"><span class="tag">AI</span></div>
+      </a>
 
-      <article class="card" data-tags="seo">
-        <div class="card-icon"><i class="icon tool"></i></div>
-        <h2 class="card-title">Kukodata</h2>
-        <p class="card-description">Analiza tus competidores en Amazon y descubre nichos rentables.</p>
-        <div class="card-footer">
-          <span class="badge">Avanzado</span>
-          <div class="tags"><span class="tag">SEO</span></div>
-        </div>
-      </article>
+      <a class="card" data-tags="ai" href="https://elevenlabs.io/sign-in" target="_blank" rel="noopener">
+        <div class="card-icon"><img src="https://logo.clearbit.com/elevenlabs.io" alt="Elevenlabs logo"></div>
+        <h2 class="card-title">Elevenlabs</h2>
+        <p class="card-description">Voces sintéticas realistas.</p>
+        <div class="card-footer"><span class="tag">AI</span></div>
+      </a>
 
-      <article class="card" data-tags="ai">
-        <div class="card-icon"><i class="icon tool"></i></div>
+      <a class="card" data-tags="ai copy" href="https://chat.openai.com/auth/login" target="_blank" rel="noopener">
+        <div class="card-icon"><img src="https://logo.clearbit.com/openai.com" alt="ChatGPT logo"></div>
+        <h2 class="card-title">ChatGPT</h2>
+        <p class="card-description">Asistente conversacional potente.</p>
+        <div class="card-footer"><span class="tag">AI</span><span class="tag">Copy</span></div>
+      </a>
+
+      <a class="card" data-tags="ai" href="https://app.heygen.com/login" target="_blank" rel="noopener">
+        <div class="card-icon"><img src="https://logo.clearbit.com/heygen.com" alt="HeyGen logo"></div>
         <h2 class="card-title">HeyGen</h2>
-        <p class="card-description">Crea videos con avatares virtuales impulsados por IA en segundos.</p>
-        <div class="card-footer">
-          <span class="badge">Popular</span>
-          <div class="tags"><span class="tag">AI</span></div>
-        </div>
-      </article>
+        <p class="card-description">Videos con avatares IA.</p>
+        <div class="card-footer"><span class="tag">AI</span></div>
+      </a>
 
-      <article class="card" data-tags="ai">
-        <div class="card-icon"><i class="icon tool"></i></div>
-        <h2 class="card-title">ChattiGPT</h2>
-        <p class="card-description">Integra un chatbot de IA a tu sitio web para mejorar el soporte al cliente.</p>
-        <div class="card-footer">
-          <span class="badge">Popular</span>
-          <div class="tags"><span class="tag">AI</span></div>
-        </div>
-      </article>
+      <a class="card" data-tags="ai" href="https://fishaudio.com/login" target="_blank" rel="noopener">
+        <div class="card-icon"><img src="https://logo.clearbit.com/fishaudio.com" alt="Fish Audio logo"></div>
+        <h2 class="card-title">Fish Audio</h2>
+        <p class="card-description">Edición de voz con IA.</p>
+        <div class="card-footer"><span class="tag">AI</span></div>
+      </a>
+
+      <a class="card" data-tags="design" href="https://www.capcut.com/login/en" target="_blank" rel="noopener">
+        <div class="card-icon"><img src="https://logo.clearbit.com/capcut.com" alt="CapCut logo"></div>
+        <h2 class="card-title">CapCut Pro</h2>
+        <p class="card-description">Edición de video profesional.</p>
+        <div class="card-footer"><span class="tag">Design</span></div>
+      </a>
+
+      <a class="card" data-tags="seo" href="https://viralityc.com/login" target="_blank" rel="noopener">
+        <div class="card-icon"><img src="https://logo.clearbit.com/viralityc.com" alt="Viralityc logo"></div>
+        <h2 class="card-title">Viralityc</h2>
+        <p class="card-description">Analítica de tendencias sociales.</p>
+        <div class="card-footer"><span class="tag">SEO</span></div>
+      </a>
+
+      <a class="card" data-tags="seo" href="https://app.shophunter.io/login" target="_blank" rel="noopener">
+        <div class="card-icon"><img src="https://logo.clearbit.com/shophunter.io" alt="ShopHunter logo"></div>
+        <h2 class="card-title">ShopHunter</h2>
+        <p class="card-description">Investiga productos en marketplaces.</p>
+        <div class="card-footer"><span class="tag">SEO</span></div>
+      </a>
+
+      <a class="card" data-tags="copy" href="https://www.deepl.com/login" target="_blank" rel="noopener">
+        <div class="card-icon"><img src="https://logo.clearbit.com/deepl.com" alt="DeepL logo"></div>
+        <h2 class="card-title">DeepL</h2>
+        <p class="card-description">Traducciones de alta calidad.</p>
+        <div class="card-footer"><span class="tag">Copy</span></div>
+      </a>
+
+      <a class="card" data-tags="ai" href="https://app.peeksta.com/login" target="_blank" rel="noopener">
+        <div class="card-icon"><img src="https://logo.clearbit.com/peeksta.com" alt="Peeksta logo"></div>
+        <h2 class="card-title">Peeksta</h2>
+        <p class="card-description">Investigación de productos con IA.</p>
+        <div class="card-footer"><span class="tag">AI</span></div>
+      </a>
+
+      <a class="card" data-tags="design" href="https://app.designbeast.com/login" target="_blank" rel="noopener">
+        <div class="card-icon"><img src="https://logo.clearbit.com/designbeast.com" alt="DesignBeast logo"></div>
+        <h2 class="card-title">DesignBeast</h2>
+        <p class="card-description">Kit de herramientas gráficas.</p>
+        <div class="card-footer"><span class="tag">Design</span></div>
+      </a>
+
+      <a class="card" data-tags="seo" href="https://my.hidemyass.com/en-us/login" target="_blank" rel="noopener">
+        <div class="card-icon"><img src="https://logo.clearbit.com/hidemyass.com" alt="HideMyAss logo"></div>
+        <h2 class="card-title">HideMyAss</h2>
+        <p class="card-description">VPN para seguridad online.</p>
+        <div class="card-footer"><span class="tag">SEO</span></div>
+      </a>
+
+      <a class="card" data-tags="ai" href="https://www.perplexity.ai/login" target="_blank" rel="noopener">
+        <div class="card-icon"><img src="https://logo.clearbit.com/perplexity.ai" alt="Perplexity logo"></div>
+        <h2 class="card-title">Perplexity</h2>
+        <p class="card-description">Búsqueda y respuestas con IA.</p>
+        <div class="card-footer"><span class="tag">AI</span></div>
+      </a>
+
+      <a class="card" data-tags="design" href="https://app.flutterflow.io/login" target="_blank" rel="noopener">
+        <div class="card-icon"><img src="https://logo.clearbit.com/flutterflow.io" alt="FlutterFlow logo"></div>
+        <h2 class="card-title">FlutterFlow</h2>
+        <p class="card-description">Builder visual para apps Flutter.</p>
+        <div class="card-footer"><span class="tag">Design</span></div>
+      </a>
+
+      <a class="card" data-tags="seo" href="https://app.sellthetrend.com/login" target="_blank" rel="noopener">
+        <div class="card-icon"><img src="https://logo.clearbit.com/sellthetrend.com" alt="SellTheTrend logo"></div>
+        <h2 class="card-title">SellTheTrend</h2>
+        <p class="card-description">Descubre productos virales.</p>
+        <div class="card-footer"><span class="tag">SEO</span></div>
+      </a>
+
+      <a class="card" data-tags="seo" href="https://app.adsparo.com/login" target="_blank" rel="noopener">
+        <div class="card-icon"><img src="https://logo.clearbit.com/adsparo.com" alt="Adsparo logo"></div>
+        <h2 class="card-title">Adsparo</h2>
+        <p class="card-description">Gestión de campañas publicitarias.</p>
+        <div class="card-footer"><span class="tag">SEO</span></div>
+      </a>
+
+      <a class="card" data-tags="ai" href="https://insmind.com/login" target="_blank" rel="noopener">
+        <div class="card-icon"><img src="https://logo.clearbit.com/insmind.com" alt="Insmind logo"></div>
+        <h2 class="card-title">Insmind</h2>
+        <p class="card-description">Herramientas de IA creativa.</p>
+        <div class="card-footer"><span class="tag">AI</span></div>
+      </a>
+
+      <a class="card" data-tags="design" href="https://www.figma.com/login" target="_blank" rel="noopener">
+        <div class="card-icon"><img src="https://logo.clearbit.com/figma.com" alt="Figma logo"></div>
+        <h2 class="card-title">Figma</h2>
+        <p class="card-description">Diseño colaborativo de interfaces.</p>
+        <div class="card-footer"><span class="tag">Design</span></div>
+      </a>
+
+      <a class="card" data-tags="ai" href="https://www.loom.com/login" target="_blank" rel="noopener">
+        <div class="card-icon"><img src="https://logo.clearbit.com/loom.com" alt="Loom logo"></div>
+        <h2 class="card-title">Loom</h2>
+        <p class="card-description">Grabación de video y pantalla.</p>
+        <div class="card-footer"><span class="tag">AI</span></div>
+      </a>
+
+      <a class="card" data-tags="design" href="https://www.pacdora.com/login" target="_blank" rel="noopener">
+        <div class="card-icon"><img src="https://logo.clearbit.com/pacdora.com" alt="Pacdora logo"></div>
+        <h2 class="card-title">Pacdora</h2>
+        <p class="card-description">Diseño 3D de packaging.</p>
+        <div class="card-footer"><span class="tag">Design</span></div>
+      </a>
+
+      <a class="card" data-tags="ai" href="https://app.cramly.ai/login" target="_blank" rel="noopener">
+        <div class="card-icon"><img src="https://logo.clearbit.com/cramly.ai" alt="Cramly logo"></div>
+        <h2 class="card-title">Cramly</h2>
+        <p class="card-description">Notas y resúmenes con IA.</p>
+        <div class="card-footer"><span class="tag">AI</span></div>
+      </a>
     </section>
   </main>
 
-  <script src="panel.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
