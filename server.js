@@ -328,5 +328,42 @@ async function startServer() {
         process.exit(1);
     }
 }
+// Endpoint para que la extensión descargue la configuración
+app.get('/api/config', authenticateOrg, async (req, res) => {
+    try {
+        const sites = await db.all(`
+            SELECT s.key, s.url_patterns, s.selectors, s.blocking_rules,
+                   c.encrypted_data as encryptedCredentials
+            FROM sites s
+            LEFT JOIN credentials c ON s.key = c.site_key
+            WHERE s.org_id = ?
+        `, [req.orgId]);
+        
+        const formattedSites = sites.map(site => ({
+            key: site.key,
+            urlPatterns: JSON.parse(site.url_patterns),
+            selectors: JSON.parse(site.selectors),
+            blockingRules: JSON.parse(site.blocking_rules || '[]'),
+            encryptedCredentials: site.encryptedCredentials
+        }));
+        
+        res.json(formattedSites);
+    } catch (error) {
+        console.error('Error getting config:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+});
+
+// Middleware de autenticación para extensiones
+function authenticateOrg(req, res, next) {
+    const orgKey = req.headers['x-org-key'];
+    
+    if (!orgKey || orgKey !== process.env.ORG_API_KEY) {
+        return res.status(401).json({ error: 'Clave de organización inválida' });
+    }
+    
+    req.orgId = 'default'; // O el org ID que uses
+    next();
+}
 
 startServer();
